@@ -22,7 +22,7 @@
   ## Usage
   In the main directory of the project, run in your terminal,
 
-    npm run dev
+    npm run dev or npm run start
 
   ## License
 
