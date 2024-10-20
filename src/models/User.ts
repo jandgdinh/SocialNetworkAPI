@@ -5,6 +5,7 @@ interface IUser extends Document {
     email: string;
     thoughts?: Schema.Types.ObjectId[];
     friends?: Schema.Types.ObjectId[];
+    friendcount?: number;
 }
 
 const userSchema = new Schema<IUser>({
@@ -32,6 +33,15 @@ const userSchema = new Schema<IUser>({
             ref: 'User'
         }
     ]
+    }, {
+    toJSON: {
+        virtuals: true
+    },
+    id: false
+});
+
+userSchema.virtual('friendCount').get(function (this: IUser) {
+    return this.friends?.length;
 });
 
 export default model<IUser>('User', userSchema);

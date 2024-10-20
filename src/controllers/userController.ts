@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import User from '../models/User';
+import Thought from '../models/Thoughts';
 
 export const createUser = async (req: Request, res: Response): Promise<void> => {
   try {
@@ -41,8 +42,10 @@ export const updateUser = async (req: Request, res: Response): Promise<void> => 
 
 export const deleteUser = async (req: Request, res: Response): Promise<void> => {
   try {
+    const user = await User.findById(req.params.id);
+    await Thought.deleteMany( { _id: { $in: user?.thoughts } });
     await User.findByIdAndDelete(req.params.id);
-    res.json({ message: 'User deleted' });
+    res.json({ message: 'User and their thoughts deleted' });
   } catch (err) {
     res.status(500).json(err);
   }

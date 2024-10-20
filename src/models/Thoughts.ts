@@ -1,35 +1,17 @@
-import { Schema, model, Document } from 'mongoose';
+import { Schema, model, Document, ObjectId } from 'mongoose';
 import moment from 'moment';
+
+import reactionSchema from './Reaction';
 
 interface IThought extends Document {
     thoughtText: string;
-    createdAt?: Date;
+    createdAt: Date | string;
     username: string;
-    reactions?: IReaction[];
+    reactions: typeof reactionSchema[];
+    reactionCount?: number;
 }
 
-interface IReaction extends Document {
-    reactionBody: string;
-    username: string;
-    createdAt?: Date;
-}
 
-const reactionSchema = new Schema<IReaction>({
-    reactionBody: {
-        type: String,
-        required: true,
-        maxLength: 280
-    },
-    username: {
-        type: String,
-        required: true
-    },
-    createdAt: {
-        type: Date,
-        default: Date.now,
-        get: (timestamp: Date) => moment(timestamp).format('MMM DD, YYYY [at] hh:mm a')
-    }
-});
 
 const thoughtSchema = new Schema<IThought>({
     thoughtText: {
@@ -48,7 +30,17 @@ const thoughtSchema = new Schema<IThought>({
         required: true
     },
     reactions: [reactionSchema]
+    }, {
+    toJSON: {
+            virtuals: true,
+            getters: true
+    },
+        id: false
 });
+
+thoughtSchema.virtual('reactionCount').get(function (this: IThought) {
+    return this.reactions.length;
+})
 
 const Thought = model<IThought>('Thought', thoughtSchema);
 export default Thought;
