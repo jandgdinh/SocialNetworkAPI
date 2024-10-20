@@ -6,6 +6,7 @@
   This is social network application where users can share their thoughts, react to friend's thoughts, and create a friend list. This application uses Express.js for routing, MongoDB for database, and Mongoose for ODM.
 
   ## Video Example
+    https://drive.google.com/file/d/1PblUbTtBpDK0oGY84hUfUvRF3VGdghXw/view?usp=sharing
 
 
   ## Table of Contents
