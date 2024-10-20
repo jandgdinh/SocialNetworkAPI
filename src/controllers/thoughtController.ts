@@ -1,9 +1,11 @@
 import { Request, Response } from 'express';
 import Thought from '../models/Thoughts';
+import User from '../models/User';
 
 export const createThought = async (req: Request, res: Response): Promise<void> => {
   try {
     const thought = await Thought.create(req.body);
+    await User.findByIdAndUpdate(req.body.userId, { $push: { thoughts: thought._id } });
     res.json(thought);
   } catch (err) {
     res.status(500).json(err);

@@ -13,7 +13,7 @@ export const createUser = async (req: Request, res: Response): Promise<void> => 
 
 export const getUsers = async (req: Request, res: Response): Promise<void> => {
   try {
-    const users = await User.find().select('-__v');
+    const users = await User.find().select('-__v').populate('thoughts').populate('friends');
     res.json(users);
   } catch (err) {
     res.status(500).json(err);
@@ -22,7 +22,7 @@ export const getUsers = async (req: Request, res: Response): Promise<void> => {
 
 export const getUser = async (req: Request, res: Response): Promise<void> => {
   try {
-    const user = await User.findById(req.params.id).select('-__v');
+    const user = await User.findById(req.params.id).select('-__v').populate('thoughts').populate('friends');
     res.json(user);
   } catch (err) {
     res.status(500).json(err);

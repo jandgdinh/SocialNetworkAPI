@@ -7,6 +7,7 @@ interface IThought extends Document {
     thoughtText: string;
     createdAt: Date | string;
     username: string;
+    userId: Schema.Types.ObjectId;
     reactions: typeof reactionSchema[];
     reactionCount?: number;
 }
@@ -27,6 +28,11 @@ const thoughtSchema = new Schema<IThought>({
     },
     username: {
         type: String,
+        required: true
+    },
+    userId: {
+        type: Schema.Types.ObjectId,
+        ref: 'User',
         required: true
     },
     reactions: [reactionSchema]
